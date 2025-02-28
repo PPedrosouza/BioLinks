@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Hash;
-
-use App\Models\User;
+use App\Http\Requests\MakeLoginRequest;
 
 class LoginController extends Controller
 {
@@ -16,22 +14,13 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function login()
+    public function login(MakeLoginRequest $request)
     {
-        $user = User::query()
-                    ->where('email', '=', request()->email)
-                    ->first();
+        if($request->attempt()){
+            return to_route('dashboard');
+        }
         
-        if($user){
-            auth()->login($user);
-
-            if(Hash::check(request()->password, $user->password)){
-                return to_route('dashboard');
-            }
-            
-        } 
-        
-        return back()->with(['message'=>'Usuário não encontrado']);
+        return back()->with(['message'=>'Verifique se os dados estão corretos!']);
     }
 
     
