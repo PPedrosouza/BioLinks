@@ -1,13 +1,13 @@
 <div>
     <h1>Login</h1>
 
-    @if($message = session()->get('message'))
+    @if ($message = session()->get('message'))
         <span>{{ $message }}</span>
     @endif
 
     <form action="{{ route('login') }}" method="POST">
         @csrf
-        
+
         <div class="">
             <input type="email" name="email" id="email" placeholder="Email" value="{{ old('email') }}">
 
