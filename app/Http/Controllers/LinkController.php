@@ -23,7 +23,7 @@ class LinkController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        
+
         $user->links()->create($request->validated());
 
         return to_route('dashboard');
@@ -32,18 +32,27 @@ class LinkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Link $link) {}
+    public function edit(Link $link)
+    {
+        return view('links.edit', [
+            'link' => $link
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateLinkRequest $request, Link $link)
     {
-        Link::query()->create(
-            $request->validated()
-        );
+        // dd($link, $request->all());
+        // $link->link = $request->link;
+        // $link->name = $request->name;
+        // $link->save();
 
-        return to_route('dashboard');
+        $link->fill($request->validated())
+            ->save();
+
+        return to_route('dashboard')->with('message', 'Alterado com sucesso!');
     }
 
     /**
